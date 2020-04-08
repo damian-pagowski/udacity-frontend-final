@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title>News article with Natural Language Processing</title>
+
+</head>
+
+<body>
+
+
+    <main>
+        <section>
+            <strong>Please insert an article URL:</strong>
+
+            <form class="" onsubmit="return app.handleSubmit(event)">
+                <input id="articleURL" type="text" name="articleURL" value="" placeholder="URL">
+                <input type="submit" name="" value="submit">
+            </form>
+            <section>
+
+                <section>
+                    <strong>Results:</strong>
+                    <textarea id="results" rows="10"></textarea>
+                </section>
+    </main>
+
+    <script>
+        // Check that service workers are supported
+        if ('serviceWorker' in navigator) {
+            // Use the window load event to keep the page load performant
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js');
+            });
+        }
+    </script>
+</body>
+
+</html>
