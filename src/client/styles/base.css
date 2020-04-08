@@ -12,3 +12,9 @@ section {
     max-width: 800px;
     margin: 50px auto;
 }
+
+
+.your-trips{
+    border-bottom: 1px solid rgba(0,0,0,.125);
+    margin-bottom: 3rem;
+}
