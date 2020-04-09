@@ -94,8 +94,8 @@
             <input type="text" class="form-control" id="trip-location">
           </div>
           <div class="form-group">
-            <label for="trip-departure" class="col-form-label">Departing:</label>
-            <input type="text" class="form-control" id="trip-departure"> 
+            <label for="trip-date" class="col-form-label">Date:</label>
+            <input type="text" class="form-control" id="trip-date"> 
           </div>
         </form>
       </div>
@@ -108,8 +108,20 @@
 </div>
 <script>
 
-function createTrip(){
-    console.log('create trip clicked')
+async function createTrip(){
+  const destination = document.getElementById('trip-location').value;
+  const date = document.getElementById('trip-date').value;
+  console.log('create trip clicked')
+
+const url = "http://localhost:3030/trip"
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({date, destination})
+  });  
+    console.log(JSON.stringify(response.json()));
 }
 
 $('#addTripModal').on('show.bs.modal', function (event) {
