@@ -1,5 +1,6 @@
+const BASE_URL = "http://localhost:3030";
 async function getTrips() {
-  const url = "http://localhost:3030/trip";
+  const url = `${BASE_URL}/trip`;
   const tripsDiv = document.getElementById("cards");
   tripsDiv.innerHTML = "";
   console.log("REQUEST URL: " + url);
@@ -31,7 +32,6 @@ function createCard(trip) {
           </h3>
           <div class="my-3">
               <button class="btn btn-info remove-trip-btn" onclick="removeTrip(${trip.id})">Remove Trip</button>
-
           </div>
           <p class="card-text mb-auto">
             Paris, France is <strong><span class="days-remaining">${trip.daysRemaining}</span></strong> days away
@@ -41,16 +41,14 @@ function createCard(trip) {
             <div class="text-muted"> High: <span class="temp-high badge badge-warning">${trip.weather.max}&#8451;</span> Low: <span class="badge badge-primary temp-low">${trip.weather.min}&#8451;</span></div>
             <div class="text-muted weather-desc">${trip.weather.desc}
             </div>
-
           </p>
         </div>
-       
       </div>`;
 }
 
 function removeTrip(id) {
   console.log("removing trip: " + id);
-  const url = `http://localhost:3030/trip/${id}`;
+  const url = `${BASE_URL}/trip/${id}`;
   console.log("REQUEST URL: " + url);
   fetch(url, { method: "DELETE" }).then(() => getTrips());
 }
@@ -61,7 +59,7 @@ async function createTrip() {
   console.log("create trip clicked");
   const body = { date, destination };
   console.log("REQUEST BODY: " + JSON.stringify(body));
-  const url = "http://localhost:3030/trip";
+  const url = `${BASE_URL}/trip`;
   console.log("REQUEST URL: " + url);
   const response = await fetch(url, {
     method: "POST",
