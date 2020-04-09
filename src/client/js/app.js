@@ -3,11 +3,7 @@ async function getTrips() {
   const url = `${BASE_URL}/trip`;
   const tripsDiv = document.getElementById("cards");
   tripsDiv.innerHTML = "";
-  console.log("REQUEST URL: " + url);
   const trips = await fetch(url).then((response) => response.json());
-
-  console.log("RESPONSE: " + trips);
-
   trips.forEach((trip) => {
     const tripCard = document.createElement("div");
     tripCard.innerHTML = createCard(trip);
@@ -47,36 +43,25 @@ function createCard(trip) {
 }
 
 function removeTrip(id) {
-  console.log("removing trip: " + id);
   const url = `${BASE_URL}/trip/${id}`;
-  console.log("REQUEST URL: " + url);
   fetch(url, { method: "DELETE" }).then(() => getTrips());
 }
 
 async function createTrip() {
   const destination = document.getElementById("trip-location").value;
   const date = document.getElementById("trip-date").value;
-  console.log("create trip clicked");
-  const body = { date, destination };
-  console.log("REQUEST BODY: " + JSON.stringify(body));
   const url = `${BASE_URL}/trip`;
-  console.log("REQUEST URL: " + url);
-  const response = await fetch(url, {
+  fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ date, destination }),
-  }).then((response) => response.json());
-  // log result
-  console.log("RESPONSE: " + JSON.stringify(response));
-  //close modal
-  $("#addTripModal").modal("hide");
-  // $("body").removeClass("modal-open");
-  // $(".modal-backdrop").remove();
-
-  // get trips from API and render
-  getTrips();
+  })
+    .then(() => getTrips())
+    .then(() => {
+      document.getElementById("close-modal").click();
+    });
 }
 
 export { createTrip, removeTrip, getTrips };
