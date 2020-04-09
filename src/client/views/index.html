@@ -4,9 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Travel App</title>
-    <link rel="stylesheet" href="../styles/bootstrap.min.css" />
     <link rel="stylesheet" href="../styles/base.css" />
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
+    <link rel="stylesheet" href="../styles/bootstrap.min.css" />
   </head>
   <body>
     <!-- header -->
@@ -26,7 +29,8 @@
         <div class="col-md-6"><h4 class="font-italic">Your trips</h4></div>
         <div class="col-md-6">
           <div class="text-right">
-            <button type="button" class="btn btn-info pb-2">Add trip</button>
+            <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTripModal" data-whatever="@fat">Open modal for @fat</button> -->
+            <button type="button" class="btn btn-info pb-2"  data-toggle="modal" data-target="#addTripModal">Add trip</button>
           </div>
         </div>
       </div>
@@ -38,7 +42,7 @@
         class="trip-image card-img-right flex-auto d-none d-lg-block"
         data-src="holder.js/200x250?theme=thumb"
         alt="Thumbnail [200x250]"
-        style="width: 200px; height: 250px;"
+        style="width: 400px; height: 400px;"
         src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22200%22%20height%3D%22250%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20200%20250%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_1715aac6887%20text%20%7B%20fill%3A%23eceeef%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A13pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_1715aac6887%22%3E%3Crect%20width%3D%22200%22%20height%3D%22250%22%20fill%3D%22%2355595c%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2255.6015625%22%20y%3D%22131%22%3EThumbnail%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"
         data-holder-rendered="true"
       />
@@ -70,6 +74,51 @@
        
       </div>
     </div>
+
+    <!-- modal -->
+
+
+<div class="modal fade" id="addTripModal" tabindex="-1" role="dialog" aria-labelledby="addTripModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addTripModalLabel">Add Trip</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="trip-location" class="col-form-label">Location:</label>
+            <input type="text" class="form-control" id="trip-location">
+          </div>
+          <div class="form-group">
+            <label for="trip-departure" class="col-form-label">Departing:</label>
+            <input type="text" class="form-control" id="trip-departure"> 
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="createTrip()">Create</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+
+function createTrip(){
+    console.log('create trip clicked')
+}
+
+$('#addTripModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+    console.log('showing modal')
+})
+
+
+</script>
   </body>
 </html>
 
