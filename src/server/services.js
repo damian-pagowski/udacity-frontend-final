@@ -11,7 +11,7 @@ const openWeatherKey = process.env.API_KEY_OPEN_WEATHER;
 const weatherbitKey = process.env.API_KEY_WEATHERBIT;
 const weatherbitApi = process.env.API_URL_WEATHERBIT;
 
-extractImage = (imageJson) => imageJson.hits[0].webformatURL;
+const extractImage = (imageJson) => imageJson.hits[0].webformatURL;
 
 module.exports = {
   getImagesData: (destination) => {
