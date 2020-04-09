@@ -25,6 +25,8 @@ const geonamesApi = process.env.API_URL_GEONAMES;
 const geonamesUsername = process.env.API_USERNAME_GEONAMES;
 const openWeatherApi = process.env.API_URL_OPEN_WEATHER;
 const openWeatherKey = process.env.API_KEY_OPEN_WEATHER;
+const weatherbitKey = process.env.API_KEY_WEATHERBIT;
+const weatherbitApi = process.env.API_URL_WEATHERBIT;
 
 function getImagesData(destination) {
   const url = `${pixabayAPI}?key=${pixabayKey}&q=${destination}&image_type=photo&page=1&per_page=3`;
@@ -47,7 +49,7 @@ function numberOfDaysBetweenDates(date1, date2) {
 
 async function getCurrentWeather(trip) {
   const url = `${openWeatherApi}?lat=${trip.coordinates.latitude}&lon=${trip.coordinates.longitude}&appid=${openWeatherKey}`;
-  console.log("WEATHER API URL: " + url)
+  console.log("WEATHER API URL: " + url);
   const weather = await fetch(url).then((res) => res.json());
   return {
     min: weather.main.temp_min,
@@ -55,6 +57,27 @@ async function getCurrentWeather(trip) {
     desc: weather.weather[0].description,
   };
 }
+
+async function getForecast(trip) {
+  const url = `${weatherbitApi}?lat=${trip.coordinates.latitude}&lon=${trip.coordinates.longitude}&key=${weatherbitKey}`;
+  console.log("WEATHER API URL: " + url);
+  const data = await fetch(url).then((res) => res.json());
+  const forecastDays = data.data.length;
+  console.log("forecastDays: " + forecastDays);
+
+  const weather =
+    trip.daysRemaining >= forecastDays
+      ? data.data[(forecastDays - 1)]
+      : data.data[trip.daysRemaining];
+
+      console.log(JSON.stringify(weather))
+  return {
+    min: weather.min_temp,
+    max: weather.max_temp,
+    desc: weather.weather.description,
+  };
+}
+
 // TRIPS
 let trips = [];
 // ROUTES
@@ -94,38 +117,12 @@ app.post("/trip", async (req, res) => {
   };
 
   // weather
-
-  const weather = await getCurrentWeather(trip);
-  // { min: -50, max: 50, desc: "Mostly sunny" };
-
+  const weather = daysRemaining <14 ? await getCurrentWeather(trip): await getForecast(trip);
   trip.weather = weather;
   // add trip to trip array
   trips.push(trip);
   //send response
   res.json(trip);
-
-  // ######### WEATHERBIT #########
-  // https://api.weatherbit.io/v2.0/forecast/daily?city=Raleigh,NC&key=API_KEY
-  // &lat=38.123&lon=-78.543
-
-  // GET FETCH EXAMPLE
-  // fetch("https://api.github.com/users/github")
-  //   .then((res) => res.json())
-  //   .then((json) => console.log(json));
-
-  // POST
-
-  // const body = { a: 1 };
-
-  // fetch("https://httpbin.org/post", {
-  //   method: "post",
-  //   body: JSON.stringify(body),
-  //   headers: { "Content-Type": "application/json" },
-  // })
-  //   .then((res) => res.json())
-  //   .then((json) => console.log(json));
-
-  // //
 });
 
 const PORT = 3030;
