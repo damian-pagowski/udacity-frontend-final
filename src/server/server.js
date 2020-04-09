@@ -23,6 +23,8 @@ const pixabayAPI = process.env.API_URL_PIXABAY;
 const pixabayKey = process.env.API_KEY_PIXABAY;
 const geonamesApi = process.env.API_URL_GEONAMES;
 const geonamesUsername = process.env.API_USERNAME_GEONAMES;
+const openWeatherApi = process.env.API_URL_OPEN_WEATHER;
+const openWeatherKey = process.env.API_KEY_OPEN_WEATHER;
 
 function getImagesData(destination) {
   const url = `${pixabayAPI}?key=${pixabayKey}&q=${destination}&image_type=photo&page=1&per_page=3`;
@@ -41,6 +43,17 @@ async function getCoordinates(destination) {
 function numberOfDaysBetweenDates(date1, date2) {
   const diff = date2.getTime() - date1.getTime();
   return Math.round(diff / (1000 * 3600 * 24));
+}
+
+async function getCurrentWeather(trip) {
+  const url = `${openWeatherApi}?lat=${trip.coordinates.latitude}&lon=${trip.coordinates.longitude}&appid=${openWeatherKey}`;
+  console.log("WEATHER API URL: " + url)
+  const weather = await fetch(url).then((res) => res.json());
+  return {
+    min: weather.main.temp_min,
+    max: weather.main.temp_max,
+    desc: weather.weather[0].description,
+  };
 }
 // TRIPS
 let trips = [];
@@ -69,10 +82,6 @@ app.post("/trip", async (req, res) => {
   // destination coordinates
   const { longitude, latitude } = await getCoordinates(destination);
 
-  // weather
-
-  const weather = { min: -50, max: 50, desc: "Mostly sunny" };
-
   // build trip object and store in array
   const trip = {
     id: trips.length + 1,
@@ -82,10 +91,17 @@ app.post("/trip", async (req, res) => {
     daysRemaining,
     dateString: date,
     image: extractImage(imageJson),
-    weather,
   };
-  trips.push(trip);
 
+  // weather
+
+  const weather = await getCurrentWeather(trip);
+  // { min: -50, max: 50, desc: "Mostly sunny" };
+
+  trip.weather = weather;
+  // add trip to trip array
+  trips.push(trip);
+  //send response
   res.json(trip);
 
   // ######### WEATHERBIT #########
