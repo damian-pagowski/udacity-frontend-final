@@ -31,7 +31,7 @@ function createCard(trip) {
             Departing: <span class="departure">${trip.dateString}</span>
           </h3>
           <div class="my-3">
-              <button class="btn btn-info remove-trip-btn" onclick="removeTrip(${trip.id})">Remove Trip</button>
+              <button class="btn btn-info remove-trip-btn" onclick="app.removeTrip(${trip.id})">Remove Trip</button>
           </div>
           <p class="card-text mb-auto">
             Paris, France is <strong><span class="days-remaining">${trip.daysRemaining}</span></strong> days away
@@ -72,14 +72,11 @@ async function createTrip() {
   console.log("RESPONSE: " + JSON.stringify(response));
   //close modal
   $("#addTripModal").modal("hide");
+  // $("body").removeClass("modal-open");
+  // $(".modal-backdrop").remove();
+
   // get trips from API and render
   getTrips();
 }
-
-$("#addTripModal").on("show.bs.modal", function (event) {
-  console.log("showing modal");
-});
-
-getTrips();
 
 export { createTrip, removeTrip, getTrips };

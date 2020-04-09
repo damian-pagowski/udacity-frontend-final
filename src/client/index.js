@@ -1,13 +1,8 @@
-import { checkForName } from './js/nameChecker'
-import { handleSubmit } from './js/formHandler'
+import { createTrip, removeTrip, getTrips } from "./js/app";
 
-import './scss/resets.scss'
-import './scss/base.scss'
-import './scss/form.scss'
-import './scss/footer.scss'
-import './scss/header.scss'
+import 'bootstrap';
+import "./styles/base.scss";
+// import "bootstrap/scss/bootstrap";
 
-export {
-    checkForName,
-    handleSubmit
-}
+getTrips();
+export { createTrip, removeTrip, getTrips };
