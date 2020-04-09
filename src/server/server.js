@@ -9,6 +9,7 @@ const fetch = require("node-fetch");
 dotenv.config();
 
 app.use(express.static("dist"));
+
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
@@ -37,28 +38,40 @@ async function getCoordinates(destination) {
   return { longitude, latitude };
 }
 
+function numberOfDaysBetweenDates(date1, date2) {
+  const diff = date2.getTime() - date1.getTime();
+  return Math.round(diff / (1000 * 3600 * 24));
+}
 // TRIPS
-const trips = [];
+let trips = [];
 // ROUTES
-app.get("/", async (req, res) => {
-
-  res.sendFile("../client/views/index.html");
-
-  // res.sendFile("dist/index.html");
+app.get("/", (req, res) => {
+  res.sendFile("dist/index.html");
 });
 
 app.get("/trip", async (req, res) => {
   res.json(trips);
 });
 
+app.delete("/trip/:id", async (req, res) => {
+  const { id } = req.params;
+  trips = trips.filter((trip) => trip.id != id);
+  res.json(trips);
+});
 app.post("/trip", async (req, res) => {
   const { date, destination } = req.body;
+  //handling date, days remaining
   const day = moment(date, "DD/MM/YYYY").toDate();
-
+  const now = new Date();
+  const daysRemaining = numberOfDaysBetweenDates(now, day);
   // destination inage
   const imageJson = await getImagesData(destination);
   // destination coordinates
   const { longitude, latitude } = await getCoordinates(destination);
+
+  // weather
+
+  const weather = { min: -50, max: 50, desc: "Mostly sunny" };
 
   // build trip object and store in array
   const trip = {
@@ -66,7 +79,10 @@ app.post("/trip", async (req, res) => {
     destination,
     coordinates: { longitude, latitude },
     date: day,
+    daysRemaining,
+    dateString: date,
     image: extractImage(imageJson),
+    weather,
   };
   trips.push(trip);
 

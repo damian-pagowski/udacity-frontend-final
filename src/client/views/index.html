@@ -36,43 +36,8 @@
       </div>
 
       <!-- cards -->
-
-      <div class="card flex-md-row mb-4 shadow-sm h-md-250">
-        <img
-        class="trip-image card-img-right flex-auto d-none d-lg-block"
-        data-src="holder.js/200x250?theme=thumb"
-        alt="Thumbnail [200x250]"
-        style="width: 400px; height: 400px;"
-        src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22200%22%20height%3D%22250%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20200%20250%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_1715aac6887%20text%20%7B%20fill%3A%23eceeef%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A13pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_1715aac6887%22%3E%3Crect%20width%3D%22200%22%20height%3D%22250%22%20fill%3D%22%2355595c%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2255.6015625%22%20y%3D%22131%22%3EThumbnail%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"
-        data-holder-rendered="true"
-      />
-        <div class="card-body d-flex flex-column align-items-start">
-          <h3 class="mb-0">
-            My Trip to: <span class="trip-destination">Paris, France</span>
-          </h3>
-          <h3 class="mb-0">
-            Departing: <span class="departure">02/06/2021</span>
-          </h3>
-          <div class="my-3">
-              <button class="btn btn-info mr-2 save-trip-btn">Save Trip</button>
-              <button class="btn btn-info remove-trip-btn">Remove Trip</button>
-
-          </div>
-          <p class="card-text mb-auto">
-            Paris, France is <strong><span class="days-remaining">220</span></strong> days away
-          </p>
-          <p class="card-text mb-auto">
-            Typical weather for then is:
-            <div class="mb-1 text-muted"> High: <span class="temp-high">33</span> Low: <span class="temp-low">15</span></div>
-           
-           
-            <div class="mb-1 text-muted weather-desc">Mostly cloudly
-            </div>
-
-          </p>
-        </div>
-       
-      </div>
+      <div id="cards"></div>
+      
     </div>
 
     <!-- modal -->
@@ -108,20 +73,92 @@
 </div>
 <script>
 
+
+async function getTrips(){
+  const url = "http://localhost:3030/trip"
+  console.log("REQUEST URL: " + url);
+  const trips = await fetch(url).then(response => response.json());
+
+  console.log("RESPONSE: " + trips)
+  const tripsDiv = document.getElementById('cards')
+
+  trips.forEach(trip => 
+    {
+    const tripCard = document.createElement('div');
+    tripCard.innerHTML = createCard(trip);
+      tripsDiv.appendChild(tripCard)
+    }  
+  );
+
+
+
+}
+
+function createCard(trip){
+
+  return `<div class="card flex-md-row mb-4 shadow-sm h-md-250">
+        <img
+        class="trip-image card-img-left "
+        alt="Destination Image"
+        style="max-width: 400px; max-height: 400px;"
+        src="${trip.image}"
+      />
+        <div class="card-body d-flex flex-column align-items-start">
+          <h3 class="mb-0">
+            My Trip to: <span class="trip-destination">${trip.destination}</span>
+          </h3>
+          <h3 class="mb-0">
+            Departing: <span class="departure">${trip.dateString}</span>
+          </h3>
+          <div class="my-3">
+              <button class="btn btn-info remove-trip-btn" onclick="removeTrip(${trip.id})">Remove Trip</button>
+
+          </div>
+          <p class="card-text mb-auto">
+            Paris, France is <strong><span class="days-remaining">${trip.daysRemaining}</span></strong> days away
+          </p>
+          <p class="card-text mb-auto">
+            Typical weather for then is:
+            <div class="mb-1 text-muted"> High: <span class="temp-high">${trip.weather.max}</span> Low: <span class="temp-low">${trip.weather.min}</span></div>
+            <div class="mb-1 text-muted weather-desc">${trip.weather.desc}
+            </div>
+
+          </p>
+        </div>
+       
+      </div>`
+
+      
+}
+
+
+function removeTrip(id){
+  console.log("removing trip: " + id)
+
+}
+
 async function createTrip(){
   const destination = document.getElementById('trip-location').value;
   const date = document.getElementById('trip-date').value;
   console.log('create trip clicked')
-
-const url = "http://localhost:3030/trip"
+  const body = {date, destination};
+  console.log("REQUEST BODY: " + JSON.stringify(body));
+  const url = "http://localhost:3030/trip"
+  console.log("REQUEST URL: " + url);
   const response = await fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({date, destination})
-  });  
-    console.log(JSON.stringify(response.json()));
+      }).then(response => response.json());
+  // log result
+  console.log("RESPONSE: " + JSON.stringify(response))
+  //close modal
+  $('#addTripModal').modal('hide');
+  // get trips from API and render
+  getTrips();
+
 }
 
 $('#addTripModal').on('show.bs.modal', function (event) {
@@ -129,7 +166,7 @@ $('#addTripModal').on('show.bs.modal', function (event) {
     console.log('showing modal')
 })
 
-
+getTrips();
 </script>
   </body>
 </html>
