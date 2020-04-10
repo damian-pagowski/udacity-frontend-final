@@ -11,9 +11,8 @@ const openWeatherKey = process.env.API_KEY_OPEN_WEATHER;
 const weatherbitKey = process.env.API_KEY_WEATHERBIT;
 const weatherbitApi = process.env.API_URL_WEATHERBIT;
 
-const extractImage = (imageJson) => imageJson.hits[0].webformatURL;
-
 module.exports = {
+  extractImage: (imageJson) => imageJson.hits[0].webformatURL,
   getImagesData: (destination) => {
     const url = `${pixabayAPI}?key=${pixabayKey}&q=${destination}&image_type=photo&page=1&per_page=3`;
     return fetch(url).then((res) => res.json());

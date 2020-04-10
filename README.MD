@@ -12,19 +12,26 @@ npm i
 
 ## Usage
 
+### External APIs
+
+App using following external APIs:
+- pixabay for images
+- open weather for current weather (In project requirements it was mentioned to use openweather if trip is scheduled less than 1 WEEK from today)
+- weather bit - for weather forecast if trip is scheduled for more than 1 week from today 
+- geonames - translate city name to coordinates
+
 ### Required environment variables
 
 Example **.env** file:
 ```bash
-
 API_URL_PIXABAY=https://pixabay.com/api/
-API_URL_WEATHERBIT=http://api.weatherbit.io/v2.0/forecast/daily
 API_URL_OPEN_WEATHER=http://api.openweathermap.org/data/2.5/weather
 API_URL_GEONAMES=http://api.geonames.org
-API_USERNAME_GEONAMES=###
-API_KEY_PIXABAY=###
-API_KEY_OPEN_WEATHER=###
-API_KEY_WEATHERBIT=###
+API_URL_WEATHERBIT=http://api.weatherbit.io/v2.0/forecast/daily
+API_KEY_PIXABAY=####
+API_KEY_OPEN_WEATHER=#####
+API_KEY_WEATHERBIT=#####
+API_USERNAME_GEONAMES=####
 ```
 
 ### Preparing Webpack bundle:

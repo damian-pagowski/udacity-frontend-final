@@ -9,6 +9,7 @@ const {
   getCoordinates,
   getCurrentWeather,
   getForecast,
+  extractImage
 } = require("./services");
 
 app.use(express.static("dist"));

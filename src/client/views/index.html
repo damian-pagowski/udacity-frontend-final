@@ -66,11 +66,23 @@
                 <label for="trip-location" class="col-form-label"
                   >Location:</label
                 >
-                <input type="text" class="form-control" id="trip-location" />
+                <input
+                  type="text"
+                  class="form-control"
+                  id="trip-location"
+                  required="required"
+                  placeholder="Bangkok"
+                />
               </div>
               <div class="form-group">
                 <label for="trip-date" class="col-form-label">Date:</label>
-                <input type="text" class="form-control" id="trip-date" />
+                <input
+                  type="text"
+                  class="form-control"
+                  id="trip-date"
+                  placeholder="dd/mm/yyyy"
+                  required="required"
+                />
               </div>
             </form>
           </div>
@@ -97,15 +109,13 @@
       </div>
     </div>
     <script>
-        // Check that service workers are supported
-        if ('serviceWorker' in navigator) {
-            // Use the window load event to keep the page load performant
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/service-worker.js');
-            });
-        }
+      // Check that service workers are supported
+      if ("serviceWorker" in navigator) {
+        // Use the window load event to keep the page load performant
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("/service-worker.js");
+        });
+      }
     </script>
   </body>
 </html>
-
-

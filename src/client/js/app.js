@@ -9,6 +9,10 @@ async function getTrips() {
     tripCard.innerHTML = createCard(trip);
     tripsDiv.appendChild(tripCard);
   });
+  if (trips.length == 0) {
+    tripsDiv.innerHTML = `<div class="alert alert-success mt-4" role="alert">
+    Nothing to show yet. Please add a new trip!</div>`;
+  }
 }
 
 function createCard(trip) {
