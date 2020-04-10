@@ -7,9 +7,8 @@ const { numberOfDaysBetweenDates } = require("./helpers");
 const {
   getImagesData,
   getCoordinates,
-  getCurrentWeather,
   getForecast,
-  extractImage
+  extractImage,
 } = require("./services");
 
 app.use(express.static("dist"));
@@ -54,16 +53,12 @@ app.post("/trip", async (req, res) => {
     destination,
     coordinates: { longitude, latitude },
     date: day,
-    daysRemaining,
+    daysRemaining: daysRemaining > 0 ? daysRemaining : 0,
     dateString: date,
     image: extractImage(imageJson),
   };
   // weather
-  const weather =
-    daysRemaining < 14
-      ? await getCurrentWeather(trip)
-      : await getForecast(trip);
-  trip.weather = weather;
+  trip.weather = await getForecast(trip);
   // add trip to trip array
   trips.push(trip);
   //send response

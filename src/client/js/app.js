@@ -25,7 +25,7 @@ function createCard(trip) {
       />
         <div class="card-body d-flex flex-column align-items-start">
           <h3 class="mb-0">
-            My Trip to: <span class="trip-destination">${trip.destination}</span>
+            My Trip to: <span class="trip-destination text-capitalize">${trip.destination}</span>
           </h3>
           <h3 class="mb-0">
             Departing: <span class="departure">${trip.dateString}</span>
@@ -34,7 +34,7 @@ function createCard(trip) {
               <button class="btn btn-info remove-trip-btn" onclick="app.removeTrip(${trip.id})">Remove Trip</button>
           </div>
           <p class="card-text mb-auto">
-            Paris, France is <strong><span class="days-remaining">${trip.daysRemaining}</span></strong> days away
+          <span class="text-capitalize">${trip.destination}</span> is <strong><span class="days-remaining">${trip.daysRemaining}</span></strong> days away
           </p>
           <p class="card-text mb-auto">
             Typical weather for then:
